@@ -1,8 +1,8 @@
-﻿using MicroServiceBlobService.Helpers;
-using MicroServiceBlobService.Models;
+﻿using MicroServiceAzureService.Helpers;
+using MicroServiceAzureService.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MicroServiceBlobService.Controllers
+namespace MicroServiceAzureService.Controllers
 {
     [ApiController]
     [Route("[controller]")]

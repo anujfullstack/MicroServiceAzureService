@@ -3,9 +3,9 @@ using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Sas;
-using MicroServiceBlobService.Models;
+using MicroServiceAzureService.Models;
 
-namespace MicroServiceBlobService.Helpers
+namespace MicroServiceAzureService.Helpers
 {
     /// <summary>
     /// Helper class for interacting with Azure Blob Storage.
@@ -43,7 +43,7 @@ namespace MicroServiceBlobService.Helpers
                 ValidateHeaders(blobUploadRequest);
                 // Check if the "folder" exists
                 // Get a container client
-                var containerClient = _blobServiceClient.GetBlobContainerClient(blobUploadRequest.ContainerName);
+                var containerClient = _blobServiceClient.GetBlobContainerClient(blobUploadRequest.ContainerName.ToLower());
                 // Create the container if it doesn't exist
                 // Check if the container exists
                 if (!await containerClient.ExistsAsync())
@@ -51,7 +51,7 @@ namespace MicroServiceBlobService.Helpers
                     // If the container doesn't exist, recreate it
                     var createResponse = await containerClient.CreateIfNotExistsAsync(PublicAccessType.BlobContainer);
                     if (createResponse != null && createResponse.GetRawResponse().Status == 201)
-                        await containerClient.SetAccessPolicyAsync(Azure.Storage.Blobs.Models.PublicAccessType.Blob);
+                        await containerClient.SetAccessPolicyAsync(PublicAccessType.Blob);
                 }
 
                 var blobPrefix = blobUploadRequest.FolderName + "/";

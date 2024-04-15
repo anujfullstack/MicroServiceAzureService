@@ -1,20 +1,19 @@
-using System;
 using System.Configuration;
 using System.Net;
-using MicroServiceBlobService.Helpers;
-using MicroServiceBlobService.Models;
-using MicroServiceBlobServiceUnitTests.helpers;
+using MicroServiceAzureService.Helpers;
+using MicroServiceAzureService.Models;
+using MicroServiceAzureServiceUnitTests.helpers;
 using Microsoft.AspNetCore.Http;
 using NUnit.Framework.Legacy;
 
-namespace MicroServiceBlobServiceUnitTests
+namespace MicroServiceAzureServiceUnitTests
 {
     [TestFixture]
     public class MicroServiceBlobServiceTests
     {
         private BlobService _blobService;
-        private static string containerName = "anujtest";
-        private static string folderName = "117";
+        private static string containerName = String.Empty;
+        private static string agencyId = String.Empty;
         private static List<string> filesUploded = new List<string>();
         private static List<FileType> allowedFileTypes = new List<FileType>();
         [OneTimeSetUp]
@@ -23,6 +22,10 @@ namespace MicroServiceBlobServiceUnitTests
             var configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App.config");
             var configFileMap = new ExeConfigurationFileMap { ExeConfigFilename = configFilePath };
             var configuration = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
+
+
+            containerName = configuration.AppSettings.Settings["ContainerName"].Value;
+            agencyId = configuration.AppSettings.Settings["AgencyId"].Value;
 
             var storageConnectionString = configuration.AppSettings.Settings["StorageConnectionString"].Value;
             var storageAccountName = configuration.AppSettings.Settings["StorageAccountName"].Value;
@@ -284,7 +287,7 @@ namespace MicroServiceBlobServiceUnitTests
             blobUploadRequest = new BlobUploadRequest
             {
                 ContainerName = containerName,
-                FolderName = folderName,
+                FolderName = agencyId,
                 FileName = fileName,
                 ContentType = fileType,
                 FileSource = "optional-source",

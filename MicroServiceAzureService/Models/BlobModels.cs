@@ -1,4 +1,4 @@
-﻿namespace MicroServiceBlobService.Models
+﻿namespace MicroServiceAzureService.Models
 {
     public class BlobUploadRequest
     {
