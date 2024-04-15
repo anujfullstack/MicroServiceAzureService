@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MicroServiceBlobService\MicroServiceBlobService.csproj" />
+    <ProjectReference Include="..\MicroServiceBlobService\MicroServiceAzureService.csproj" />
   </ItemGroup>
 
   <ItemGroup>
