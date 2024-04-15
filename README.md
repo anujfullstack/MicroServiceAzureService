@@ -132,4 +132,18 @@ var sasUrl = blobService.GetDownloadUrl("containerName", "blobName.jpg");
 ![Screenshot_6](https://github.com/AnujTheDev/MicroServiceAzureService/assets/141553432/ccee3676-3e3d-48c4-acff-999c6118d15c)
 ![Screenshot_1](https://github.com/AnujTheDev/MicroServiceAzureService/assets/141553432/6a135197-18d7-467d-a985-979385d65d67)
 
+### Postman (File/Upload)
+![Postman](https://github.com/anujfullstack/MicroServiceAzureService/assets/141553432/386648c0-c174-499c-a7c6-c707dd3cabe6)
 
+```Postman CURL
+curl --location 'https://localhost:7086/file/upload' \
+--form 'containerName="SmartzDevContainer"' \
+--form 'fileName="GenrealPrin3.docx"' \
+--form 'file=@"/C:/Users/anujm/OneDrive/Desktop/Sample.docx"' \
+--form 'contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document"' \
+--form 'isAsync="false"' \
+--form 'fileSource="optional-source"' \
+--form 'referenceKey="optional-key"' \
+--form 'referenceValue="optional-value"' \
+--form 'FolderName="117"'
+```
