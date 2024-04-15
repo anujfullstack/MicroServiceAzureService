@@ -5,6 +5,7 @@ using MicroServiceBlobService.Helpers;
 using MicroServiceBlobService.Models;
 using MicroServiceBlobServiceUnitTests.helpers;
 using Microsoft.AspNetCore.Http;
+using NUnit.Framework.Legacy;
 
 namespace MicroServiceBlobServiceUnitTests
 {
@@ -185,7 +186,7 @@ namespace MicroServiceBlobServiceUnitTests
                         long sizeInBytes = stream.Length;
 
                         // Check if the size is greater than 10KB
-                        Assert.Greater(sizeInBytes, 100, "Blob size is Greater Then 100");
+                       ClassicAssert.Greater(sizeInBytes, 100, "Blob size is Greater Then 100");
 
                         var rootPath = Directory.GetCurrentDirectory();
                         var folderPath = Path.Combine(rootPath.Replace(@"bin\Debug\net6.0", ""), "Files"); // Path to your "Files" folder
@@ -193,7 +194,7 @@ namespace MicroServiceBlobServiceUnitTests
                         var filePath = Path.Combine(folderPath, filename);
                         FileInfo localFileInfo = new FileInfo(filePath);
                         long localFileSize = localFileInfo.Length;
-                        Assert.AreEqual(localFileSize, sizeInBytes, "Blob size does not match the size of the local file");
+                        ClassicAssert.AreEqual(localFileSize, sizeInBytes, "Blob size does not match the size of the local file");
                     }
                 }
             }
@@ -214,7 +215,7 @@ namespace MicroServiceBlobServiceUnitTests
                 };
                 // Call the DeleteBlobAsync method
                 var result = await _blobService.DeleteBlobAsync(blobUploadRequest);
-                Assert.IsTrue(result);
+                ClassicAssert.IsTrue(result);
             }
         }
 
@@ -263,10 +264,10 @@ namespace MicroServiceBlobServiceUnitTests
                 blobUploadRequest.Content = formFile.OpenReadStream();
                 var result = await _blobService.UploadBlobAsync(blobUploadRequest);
                 // Assert
-                Assert.IsNotNull(result);
-                Assert.IsNotNull(result.BlobUrl);
-                Assert.IsNotNull(result.DownloadUrl);
-                Assert.AreEqual("File uploaded successfully.", result.Message);
+                ClassicAssert.IsNotNull(result);
+                ClassicAssert.IsNotNull(result.BlobUrl);
+                ClassicAssert.IsNotNull(result.DownloadUrl);
+                ClassicAssert.AreEqual("File uploaded successfully.", result.Message);
                 filesUploded.Add(result.BlobUrl);
                 if (!string.IsNullOrEmpty(result.BlobDowngradeUrl))
                     filesUploded.Add(result.BlobDowngradeUrl);
