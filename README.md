@@ -1,4 +1,5 @@
 # MicroService-Azure-Service
+[![Watch the video](https://cdn.loom.com/sessions/thumbnails/e35fd2004f6042ca8d7166e2bd109c31-with-play.jpg)](https://www.loom.com/embed/e35fd2004f6042ca8d7166e2bd109c31?sid=4df997e8-162b-445c-9547-60feaf21f285)
 
 ## Overview
 
