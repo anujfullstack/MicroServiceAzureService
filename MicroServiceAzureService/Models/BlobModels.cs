@@ -1,5 +1,11 @@
 ﻿namespace MicroServiceAzureService.Models
 {
+    public class StorageAccountInfo
+    {
+        public string AccountName { get; set; }
+        public string AccountKey { get; set; }
+    }
+
     public class BlobUploadRequest
     {
         public string ContainerName { get; set; }
