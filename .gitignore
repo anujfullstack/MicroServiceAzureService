@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /MicroServiceBlobService/appsettings.json
 /MicroServiceBlobServiceUnitTests/App.config
+/MicroServiceAzureService/appsettings.json
