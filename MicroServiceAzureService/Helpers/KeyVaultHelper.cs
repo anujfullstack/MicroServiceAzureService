@@ -6,15 +6,12 @@ namespace MicroServiceAzureService.Helpers
 {
     public class KeyVaultHelper
     {
-        private string _keyVaultName;
         public static IConfiguration Configuration { get; set; }
         public ILogger Logger { get; set; }
 
         public KeyVaultHelper(IConfiguration configuration, ILogger logger)
         {
             Configuration = configuration;
-            //logger.LogInformation("KeyVaultClass---"+Convert.ToString(Configuration["keyVaultName"]));
-            _keyVaultName = Convert.ToString(Configuration["keyVaultName"]);
             Logger = logger;
         }
 
