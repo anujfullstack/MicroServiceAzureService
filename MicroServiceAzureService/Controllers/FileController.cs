@@ -16,12 +16,16 @@ namespace MicroServiceAzureService.Controllers
         {
             _logger = logger;
             Configuration = configuration;
-            
-            var configrationInstances = new ConfigrationInstances(configuration);
+            var configrationInstances = new ConfigrationInstances(configuration, _logger);
             var connectionString = configrationInstances.StorageConnectionString();
             var storageAccountName = configrationInstances.StorageAccountName;
             var storageAccountKey = configrationInstances.StorageAccountKey();
-            _blobService = new BlobService(connectionString, storageAccountName, storageAccountKey);
+
+            _logger.LogInformation(connectionString);
+            _logger.LogInformation(Configuration["StorageConnectionString"]);
+            _logger.LogInformation(Configuration["StorageAccountName"]);
+            _logger.LogInformation(Configuration["StorageAccountKey"]);
+            _blobService = new BlobService(logger,connectionString, storageAccountName, storageAccountKey);
         }
         [HttpGet(Name = "GetFileClassVersion")]
         public string Get()

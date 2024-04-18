@@ -30,7 +30,7 @@ namespace MicroServiceAzureServiceUnitTests
             var storageConnectionString = configuration.AppSettings.Settings["StorageConnectionString"].Value;
             var storageAccountName = configuration.AppSettings.Settings["StorageAccountName"].Value;
             var storageAccountKey = configuration.AppSettings.Settings["StorageAccountKey"].Value;
-            _blobService = new BlobService(storageConnectionString, storageAccountName, storageAccountKey);
+            _blobService = new BlobService(null,storageConnectionString, storageAccountName, storageAccountKey);
             allowedFileTypes = new List<FileType>
             {
                 new FileType("PowerPointSamplePPT.ppt",".ppt", "application/vnd.ms-powerpoint"),

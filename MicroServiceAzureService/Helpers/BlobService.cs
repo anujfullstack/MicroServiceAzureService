@@ -4,6 +4,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Sas;
 using MicroServiceAzureService.Models;
+using Microsoft.Extensions.Logging;
 
 namespace MicroServiceAzureService.Helpers
 {
@@ -16,18 +17,20 @@ namespace MicroServiceAzureService.Helpers
         private readonly string _storageAccountName;
         private readonly string _storageAccountKey;
         private readonly string _storageConnectionString;
+        public ILogger Logger { get; set; }
         /// <summary>
         /// Initializes a new instance of the <see cref="BlobService"/> class.
         /// </summary>
         /// <param name="storageConnectionString">The Azure Storage connection string.</param>
         /// <param name="storageAccountName">The Azure Storage account name.</param>
         /// <param name="storageAccountKey">The Azure Storage account key.</param>
-        public BlobService(string storageConnectionString, string storageAccountName, string storageAccountKey)
+        public BlobService(ILogger logger, string storageConnectionString, string storageAccountName, string storageAccountKey)
         {
             _blobServiceClient = new BlobServiceClient(storageConnectionString);
             _storageAccountName = storageAccountName;
             _storageAccountKey = storageAccountKey;
             _storageConnectionString = storageConnectionString;
+            Logger = logger;
         }
         /// <summary>
         /// Uploads a blob to Azure Blob Storage.
@@ -43,7 +46,11 @@ namespace MicroServiceAzureService.Helpers
                 ValidateHeaders(blobUploadRequest);
                 // Check if the "folder" exists
                 // Get a container client
+                if (Logger != null)
+                    Logger.LogInformation("InBlob");
                 var containerClient = _blobServiceClient.GetBlobContainerClient(blobUploadRequest.ContainerName.ToLower());
+                if (Logger != null)
+                    Logger.LogInformation("InBlob111");
                 // Create the container if it doesn't exist
                 // Check if the container exists
                 if (!await containerClient.ExistsAsync())
@@ -53,11 +60,14 @@ namespace MicroServiceAzureService.Helpers
                     if (createResponse != null && createResponse.GetRawResponse().Status == 201)
                         await containerClient.SetAccessPolicyAsync(PublicAccessType.Blob);
                 }
-
+                if (Logger != null)
+                    Logger.LogInformation("InBlob3");
                 var blobPrefix = blobUploadRequest.FolderName + "/";
                 var blobName = blobPrefix + blobUploadRequest.FileName;
                 // Get a blob client
                 var blobClient = containerClient.GetBlobClient(blobName);
+                if (Logger != null)
+                    Logger.LogInformation("InBlob4");
                 var copyOfContent = blobUploadRequest.Content;
                 // Upload the blob
                 var response = await blobClient.UploadAsync(blobUploadRequest.Content);
@@ -69,7 +79,7 @@ namespace MicroServiceAzureService.Helpers
                 var downloadUrl = GetDownloadUrl(blobUploadRequest.ContainerName, blobUploadRequest.FileName);
                 if (IsImage(fileExtension, blobUploadRequest.ContentType))
                 {
-                    downGradeUrl = await UploadImageAndDownsizedVersionAsync(containerClient, blobUploadRequest, copyOfContent);
+                    //downGradeUrl = await UploadImageAndDownsizedVersionAsync(containerClient, blobUploadRequest, copyOfContent);
                 }
                 // Return URLs along with the response message
                 return new UploadResult
@@ -91,6 +101,8 @@ namespace MicroServiceAzureService.Helpers
             }
             catch (Exception ex)
             {
+                if (Logger != null)
+                    Logger.LogError(ex.Message);
                 throw ex;
             }
         }

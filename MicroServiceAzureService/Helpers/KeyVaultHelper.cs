@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 
 namespace MicroServiceAzureService.Helpers
@@ -6,23 +7,22 @@ namespace MicroServiceAzureService.Helpers
     public class KeyVaultHelper
     {
         private string _keyVaultName;
-        private string _clientId;
-        private string _clientSecret;
-        private string _tenantId;
         public static IConfiguration Configuration { get; set; }
-        public KeyVaultHelper(IConfiguration configuration)
+        public ILogger Logger { get; set; }
+
+        public KeyVaultHelper(IConfiguration configuration, ILogger logger)
         {
             Configuration = configuration;
-            _tenantId = Convert.ToString(Configuration["tenantId"]);
+            //logger.LogInformation("KeyVaultClass---"+Convert.ToString(Configuration["keyVaultName"]));
             _keyVaultName = Convert.ToString(Configuration["keyVaultName"]);
-            _clientId = Convert.ToString(Configuration["clientId"]);
-            _clientSecret = Convert.ToString(Configuration["clientSecret"]);
+            Logger = logger;
         }
 
         public string GetSecretAsync(string secretName)
         {
-            var credential = new Azure.Identity.ClientSecretCredential(_tenantId, _clientId, _clientSecret);
-            var client = new SecretClient(new Uri($"https://{_keyVaultName}.vault.azure.net/"), credential);
+            //Logger.LogInformation("KeyVaultClass---" + Convert.ToString(Configuration["StorageConnectionString"]));
+            var keyVaultUrl = Convert.ToString(Configuration["KeyVaultUrl"]);
+            var client = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
             try
             {
                 KeyVaultSecret secret = client.GetSecret(secretName);
